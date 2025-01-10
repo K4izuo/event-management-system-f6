@@ -17,6 +17,7 @@ import CreateEventModal from "../EventsServices/AddEvent";
 import EditEventModal from "../EventsServices/UpdateEvent";
 import DeleteConfirmationModal from "../EventsServices/DeleteEvent";
 import { configDB } from '../server';
+import { useAuth } from '../auth/AuthContext';
 
 const EventDashboard = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -33,33 +34,11 @@ const EventDashboard = () => {
   // Configure polling interval (in milliseconds)
   const POLLING_INTERVAL = 1000; // Poll every 5 seconds
 
-  const handleLogout = async () => {
-    try {
-      const response = await axios.post(`${configDB.apiUrl}/logout`, {}, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (response.data.success) {
-        localStorage.removeItem('token');
-        sessionStorage.clear();
-        
-        setTimeout(() => {
-          window.location.href = '/event-management-system-f6';
-        }, 100);
-      } else {
-        setError('Logout failed. Please try again.');
-      }
-    } catch (error) {
-      console.error('Logout error:', error);
-      
-      // Implement graceful degradation for network issues
-      localStorage.removeItem('token');
-      sessionStorage.clear();
-      window.location.href = '/event-management-system-f6';
-    }
+  const { logout } = useAuth();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await logout();
   };
 
   const fetchEvents = useCallback(async () => {
