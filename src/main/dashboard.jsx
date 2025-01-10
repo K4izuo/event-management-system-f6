@@ -47,7 +47,7 @@ const EventDashboard = () => {
         sessionStorage.clear();
         
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = '/event-management-system-f6';
         }, 100);
       } else {
         setError('Logout failed. Please try again.');
@@ -58,7 +58,7 @@ const EventDashboard = () => {
       // Implement graceful degradation for network issues
       localStorage.removeItem('token');
       sessionStorage.clear();
-      window.location.href = '/';
+      window.location.href = '/event-management-system-f6';
     }
   };
 
